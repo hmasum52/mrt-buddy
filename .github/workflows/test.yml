@@ -3,7 +3,7 @@ name: test Build
 
 on:
   push:
-    branches: [ master ]
+    branches: [ release ]
 
   workflow_dispatch: # Manually trigger the workflow
 
