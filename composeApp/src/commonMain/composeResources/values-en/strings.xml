@@ -1,4 +1,12 @@
 <resources>
     <string name="greetings">Welcome</string>
     <string name="language">English</string>
+    <string name="rescan">Rescan</string>
+    <string name="currentBalance">Current Balance</string>
+    <string name="tapToRead">Tap your card behind your phone to read balance</string>
+    <string name="readingCard">Reading card...</string>
+    <string name="noNfcSupport">This device doesn't support NFC</string>
+    <string name="requiredNfc">NFC is required to read your MRT Pass</string>
+    <string name="nfcOff">NFC is turned off</string>
+    <string name="enableNfc">Please enable NFC in your device settings</string>
 </resources>

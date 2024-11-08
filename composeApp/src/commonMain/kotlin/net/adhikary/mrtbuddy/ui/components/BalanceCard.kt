@@ -12,8 +12,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import mrtbuddy.composeapp.generated.resources.Res
+import mrtbuddy.composeapp.generated.resources.currentBalance
+import mrtbuddy.composeapp.generated.resources.enableNfc
+import mrtbuddy.composeapp.generated.resources.nfcOff
+import mrtbuddy.composeapp.generated.resources.noNfcSupport
+import mrtbuddy.composeapp.generated.resources.readingCard
+import mrtbuddy.composeapp.generated.resources.requiredNfc
+import mrtbuddy.composeapp.generated.resources.rescan
+import mrtbuddy.composeapp.generated.resources.tapToRead
 import net.adhikary.mrtbuddy.getPlatform
 import net.adhikary.mrtbuddy.model.CardState
+import net.adhikary.mrtbuddy.translateNumber
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun BalanceCard(
@@ -31,7 +42,7 @@ fun BalanceCard(
         Box(Modifier.fillMaxSize().padding(24.dp)) { // Increased padding
             if (getPlatform().name != "android") {
                 Text(
-                    "Rescan",
+                    text = stringResource(Res.string.rescan),
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .clickable { onTapClick() },
@@ -61,13 +72,13 @@ fun BalanceCard(
 @Composable
 private fun BalanceContent(amount: Int) {
     Text(
-        text = "Latest Balance",
+        text = stringResource(Res.string.currentBalance),
         style = MaterialTheme.typography.h6,
         color = MaterialTheme.colors.onSurface.copy(alpha = 0.6f)
     )
     Spacer(modifier = Modifier.height(12.dp))
     Text(
-        text = "৳ $amount",
+        text = "৳ ${translateNumber(amount)}", // Added currency symbol
         style = MaterialTheme.typography.h4.copy(
             fontWeight = FontWeight.SemiBold // Less bold for iOS
         ),
@@ -78,7 +89,7 @@ private fun BalanceContent(amount: Int) {
 @Composable
 private fun ReadingContent() {
     Text(
-        text = "Reading card...",
+        text = stringResource(Res.string.readingCard),
         style = MaterialTheme.typography.h6,
         fontWeight = FontWeight.Bold,
         color = MaterialTheme.colors.onSurface
@@ -88,7 +99,7 @@ private fun ReadingContent() {
 @Composable
 private fun WaitingContent() {
     Text(
-        text = "Tap your card behind your phone to read balance",
+        text = stringResource(Res.string.tapToRead),
         style = MaterialTheme.typography.h6,
         fontWeight = FontWeight.Normal,
         color = MaterialTheme.colors.onSurface,
@@ -110,7 +121,7 @@ private fun ErrorContent(message: String) {
 @Composable
 private fun NoNfcSupportContent() {
     Text(
-        text = "This device doesn't support NFC",
+        text = stringResource(Res.string.noNfcSupport),
         style = MaterialTheme.typography.h6,
         fontWeight = FontWeight.Bold,
         color = MaterialTheme.colors.error,
@@ -118,7 +129,7 @@ private fun NoNfcSupportContent() {
     )
     Spacer(modifier = Modifier.height(8.dp))
     Text(
-        text = "NFC is required to read your MRT Pass",
+        text = stringResource(Res.string.requiredNfc),
         style = MaterialTheme.typography.h4,
         color = MaterialTheme.colors.error.copy(alpha = 0.7f),
         textAlign = TextAlign.Center
@@ -128,7 +139,7 @@ private fun NoNfcSupportContent() {
 @Composable
 private fun NfcDisabledContent() {
     Text(
-        text = "NFC is turned off",
+        text = stringResource(Res.string.nfcOff),
         style = MaterialTheme.typography.h6,
         fontWeight = FontWeight.Bold,
         color = MaterialTheme.colors.error,
@@ -136,7 +147,7 @@ private fun NfcDisabledContent() {
     )
     Spacer(modifier = Modifier.height(8.dp))
     Text(
-        text = "Please enable NFC in your device settings",
+        text = stringResource(Res.string.enableNfc),
         style = MaterialTheme.typography.body2,
         color = MaterialTheme.colors.error.copy(alpha = 0.7f),
         textAlign = TextAlign.Center
