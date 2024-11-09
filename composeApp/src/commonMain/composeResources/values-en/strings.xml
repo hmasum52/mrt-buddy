@@ -46,4 +46,18 @@
     <string name="oct">Oct</string>
     <string name="nov">Nov</string>
     <string name="dec">Dec</string>
+
+    <!-- fare calculator-->
+    <string name="selectStation">Select stations</string>
+    <string name="chooseOrgDest">Choose origin and destination\nto calculate fare</string>
+    <string name="withMRT">with MRT/Rapid Pass</string>
+    <string name="singleTicket">Single Journey Ticket</string>
+    <string name="discount">Discount</string>
+    <string name="yourBalance">Your balance</string>
+    <string name="insufficient">is sufficient.</string>
+    <string name="tooLow">is too low.</string>
+    <string name="tapToCheckSufficientBalance">Tap your card to check if you have sufficient balance</string>
+    <string name="rescanToCheckSufficientBalance">Rescan your card to check if you have sufficient balance</string>
+    <string name="selectOrigin">Select Origin Station</string>
+    <string name="selectDestination">Select Destination Station</string>
 </resources>

@@ -34,6 +34,7 @@ import mrtbuddy.composeapp.generated.resources.uttaraNorth
 import mrtbuddy.composeapp.generated.resources.uttaraSouth
 import net.adhikary.mrtbuddy.model.TransactionType
 import net.adhikary.mrtbuddy.model.TransactionWithAmount
+import net.adhikary.mrtbuddy.nfc.service.StationService
 import net.adhikary.mrtbuddy.nfc.service.TimestampService
 import net.adhikary.mrtbuddy.translateNumber
 import net.adhikary.mrtbuddy.ui.theme.LightPositiveGreen
@@ -115,7 +116,9 @@ fun TransactionItem(
             verticalArrangement = Arrangement.Center,
         ) {
             Text(
-                text = if (type == TransactionType.Commute) "${translateStationToBangla(fromStation)} → ${translateStationToBangla(toStation)}" else stringResource(Res.string.balanceUpdate),
+                text = if (type == TransactionType.Commute)
+                    "${StationService.translate(fromStation)} → ${StationService.translate(toStation)}"
+                    else stringResource(Res.string.balanceUpdate),
                 style = MaterialTheme.typography.body2,
                 color = MaterialTheme.colors.onSurface
             )
@@ -145,56 +148,4 @@ fun TransactionItem(
             )
         }
     }
-}
-
-@Composable
-fun translateStationToBangla(stationName: String): String {
-    return when (stationName) {
-        "Motijheel" -> stringResource(Res.string.motijheel)
-        "Bangladesh Secretariat" -> stringResource(Res.string.bangladeshSecretariat)
-        "Dhaka University" -> stringResource(Res.string.dhakaUniversity)
-        "Shahbagh" -> stringResource(Res.string.shahbagh)
-        "Karwan Bazar" -> stringResource(Res.string.karwanBazar)
-        "Farmgate" -> stringResource(Res.string.farmgate)
-        "Bijoy Sarani" -> stringResource(Res.string.bijoySarani)
-        "Agargaon" -> stringResource(Res.string.agargaon)
-        "Shewrapara" -> stringResource(Res.string.shewrapara)
-        "Kazipara" -> stringResource(Res.string.kazipara)
-        "Mirpur 10" -> stringResource(Res.string.mirpur10)
-        "Mirpur 11" -> stringResource(Res.string.mirpur11)
-        "Pallabi" -> stringResource(Res.string.pallabi)
-        "Uttara South" -> stringResource(Res.string.uttaraSouth)
-        "Uttara Center" -> stringResource(Res.string.uttaraCenter)
-        "Uttara North" -> stringResource(Res.string.uttaraNorth)
-        else -> stationName // Default to English if no match is found
-    }
-}
-
-// 09 Nov 2024, 12:00 PM
-fun translateDate(dateStr: String): String {
-    //check locale
-
-    val dateParts = dateStr.split(" ")
-    val month = when (dateParts[1]) {
-        "Jan" -> "জানুয়ারি"
-        "Feb" -> "ফেব্রুয়ারি"
-        "Mar" -> "মার্চ"
-        "Apr" -> "এপ্রিল"
-        "May" -> "মে"
-        "Jun" -> "জুন"
-        "Jul" -> "জুলাই"
-        "Aug" -> "আগস্ট"
-        "Sep" -> "সেপ্টেম্বর"
-        "Oct" -> "অক্টোবর"
-        "Nov" -> "নভেম্বর"
-        "Dec" -> "ডিসেম্বর"
-        else -> dateParts[1]
-    }
-    val timeParts = dateParts[3].split(":")
-    val hour = timeParts[0].toInt()
-    val minute = timeParts[1]
-    val amPm = if (hour < 12) "এএম" else "পিএম"
-    val banglaHour = if (hour == 0) 12 else if (hour > 12) hour - 12 else hour
-    val banglaTime = "$banglaHour:$minute $amPm"
-    return "${dateParts[0]} $month ${dateParts[2]}, $banglaTime"
 }
