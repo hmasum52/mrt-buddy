@@ -1,13 +1,11 @@
 package net.adhikary.mrtbuddy
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.safeContentPadding
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.material.Button
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -18,11 +16,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import mrtbuddy.composeapp.generated.resources.Res
-import mrtbuddy.composeapp.generated.resources.greetings
+import mrtbuddy.composeapp.generated.resources.appName
 import mrtbuddy.composeapp.generated.resources.language
 import net.adhikary.mrtbuddy.dao.DemoDao
 import net.adhikary.mrtbuddy.managers.RescanManager
@@ -33,16 +32,12 @@ import net.adhikary.mrtbuddy.ui.screens.MainScreen
 import net.adhikary.mrtbuddy.ui.theme.MRTBuddyTheme
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import kotlin.math.log
 
 @Composable
 @Preview
 fun App(dao: DemoDao) {
     val scope = rememberCoroutineScope()
     val nfcManager = getNFCManager()
-    val cardState by nfcManager.cardState.collectAsStateWithLifecycle()
-    val transactions by nfcManager.transactions.collectAsStateWithLifecycle()
-
     val McardState = remember { mutableStateOf<CardState>(CardState.WaitingForTap) }
     val Mtransactions = remember { mutableStateOf<List<Transaction>>(emptyList()) }
 
@@ -71,32 +66,29 @@ fun App(dao: DemoDao) {
         ) {
             Scaffold {
                 Box(
-                    Modifier.systemBarsPadding()
+                   Modifier.systemBarsPadding()
                 ) {
                     Column {
                         TopAppBar(
                             title = {
-                                Text(text = stringResource(Res.string.greetings))
+                                Text(text = stringResource(Res.string.appName))
                             },
                             backgroundColor = MaterialTheme.colors.background,
                             actions = {
-                                Button(onClick = {
-                                    lang = switchLanguage(lang)
-                                    changeLang(lang)
-                                }) {
+                                OutlinedButton(
+                                    onClick = {
+                                        lang = switchLanguage(lang)
+                                        changeLang(lang)
+                                    },
+                                    shape = RoundedCornerShape(24.dp),
+                                ) {
                                     Text(text = stringResource(Res.string.language))
                                 }
                             }
                         )
-
                         MainScreen(
                             cardState = McardState.value,
-                            transactions = Mtransactions.value,
-                            onTapClick = {
-                                if(getPlatform().name != "android"){
-                                    isRescanRequested.value = true
-                                }
-                            }
+                            transactions = Mtransactions.value
                         )
                     }
                 }
@@ -105,10 +97,7 @@ fun App(dao: DemoDao) {
 
         }
 
-        MainScreen(
-            cardState = McardState.value,
-            transactions = Mtransactions.value
-        )
+
     }
 }
 

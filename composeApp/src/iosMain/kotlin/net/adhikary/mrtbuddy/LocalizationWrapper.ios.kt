@@ -16,5 +16,5 @@ actual fun translateNumber(
 ): String {
     val numberFormatter = NSNumberFormatter()
     numberFormatter.numberStyle = NSNumberFormatterDecimalStyle
-    return numberFormatter.stringFromNumber(NSNumber(number)) ?: ""
+    return (numberFormatter.stringFromNumber(NSNumber(number)) ?: "").replace(",", "")
 }
