@@ -19,18 +19,17 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.room.RoomDatabase
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import mrtbuddy.composeapp.generated.resources.Res
 import mrtbuddy.composeapp.generated.resources.greetings
 import mrtbuddy.composeapp.generated.resources.language
 import net.adhikary.mrtbuddy.dao.DemoDao
-import net.adhikary.mrtbuddy.database.AppDatabase
+import net.adhikary.mrtbuddy.managers.RescanManager
 import net.adhikary.mrtbuddy.model.CardState
 import net.adhikary.mrtbuddy.model.Transaction
 import net.adhikary.mrtbuddy.nfc.getNFCManager
-import net.adhikary.mrtbuddy.ui.components.MainScreen
+import net.adhikary.mrtbuddy.ui.screens.MainScreen
 import net.adhikary.mrtbuddy.ui.theme.MRTBuddyTheme
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -39,7 +38,6 @@ import kotlin.math.log
 @Composable
 @Preview
 fun App(dao: DemoDao) {
-    var isRescanRequested = mutableStateOf(false)
     val scope = rememberCoroutineScope()
     val nfcManager = getNFCManager()
     val cardState by nfcManager.cardState.collectAsStateWithLifecycle()
@@ -48,9 +46,9 @@ fun App(dao: DemoDao) {
     val McardState = remember { mutableStateOf<CardState>(CardState.WaitingForTap) }
     val Mtransactions = remember { mutableStateOf<List<Transaction>>(emptyList()) }
 
-    if(isRescanRequested.value){
+    if(RescanManager.isRescanRequested.value) {
         nfcManager.startScan()
-        isRescanRequested.value = false
+        RescanManager.resetRescanRequest()
     }
 
     scope.launch {
@@ -107,6 +105,10 @@ fun App(dao: DemoDao) {
 
         }
 
+        MainScreen(
+            cardState = McardState.value,
+            transactions = Mtransactions.value
+        )
     }
 }
 
