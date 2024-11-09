@@ -19,11 +19,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.room.RoomDatabase
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import mrtbuddy.composeapp.generated.resources.Res
 import mrtbuddy.composeapp.generated.resources.greetings
 import mrtbuddy.composeapp.generated.resources.language
+import net.adhikary.mrtbuddy.dao.DemoDao
+import net.adhikary.mrtbuddy.database.AppDatabase
 import net.adhikary.mrtbuddy.model.CardState
 import net.adhikary.mrtbuddy.model.Transaction
 import net.adhikary.mrtbuddy.nfc.getNFCManager
@@ -35,7 +38,7 @@ import kotlin.math.log
 
 @Composable
 @Preview
-fun App() {
+fun App(dao: DemoDao) {
     var isRescanRequested = mutableStateOf(false)
     val scope = rememberCoroutineScope()
     val nfcManager = getNFCManager()
